@@ -34,12 +34,17 @@ public class CustomAuthenProvider implements AuthenticationProvider {
 
         // kiểm tra biến isSuccess và trả về
         if (roleDTOS.size() > 0) {
+            // streamAPI
+            // map() : Cho phép biến đổi kiểu dữ liệu gốc thành kiểu dữ liệu khác trong quá trình duyệt mảng/đối tượng44
+            // chuyển đổi nhanh các phần tử List này sang List khác thay cho nhiều đoạn code bên dưới
+            List<SimpleGrantedAuthority> authorityList = roleDTOS.stream().map(item -> new SimpleGrantedAuthority(item.getName())).toList();
+
             // vì tham số thứ 3 của UsernamePasswordAuthenticationToken là GrantedAuthority nên phải tạo kiểu GrantedAuthority để gán vô
-            List<GrantedAuthority> authorityList = new ArrayList<>();
-            roleDTOS.forEach(roleDTO -> {
-                SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(roleDTO.getName());
-                authorityList.add(simpleGrantedAuthority);
-            });
+//            List<GrantedAuthority> authorityList = new ArrayList<>();
+//            roleDTOS.forEach(roleDTO -> {
+//                SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(roleDTO.getName());
+//                authorityList.add(simpleGrantedAuthority);
+//            });
 
             return new UsernamePasswordAuthenticationToken("", "", authorityList);
         } else {

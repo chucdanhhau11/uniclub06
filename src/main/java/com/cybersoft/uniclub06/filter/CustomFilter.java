@@ -45,11 +45,16 @@ public class CustomFilter extends OncePerRequestFilter {
                 List<AuthorityDTO> authorityDTOS = objectMapper.readValue(data, new TypeReference<List<AuthorityDTO>>() {
                 });
 
-                List<GrantedAuthority> authorityList = new ArrayList<>();
-                authorityList.forEach(dataDTO -> {
-                    SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(dataDTO.getAuthority());
-                    authorityList.add(simpleGrantedAuthority);
-                });
+                // streamAPI
+                // map() : Cho phép biến đổi kiểu dữ liệu gốc thành kiểu dữ liệu khác trong quá trình duyệt mảng/đối tượng44
+                // chuyển đổi nhanh các phần tử List này sang List khác thay cho nhiều đoạn code bên dưới
+                List<SimpleGrantedAuthority> authorityList = authorityDTOS.stream().map(item -> new SimpleGrantedAuthority(item.getAuthority())).toList();
+
+//                List<GrantedAuthority> authorityList = new ArrayList<>();
+//                authorityList.forEach(dataDTO -> {
+//                    SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(dataDTO.getAuthority());
+//                    authorityList.add(simpleGrantedAuthority);
+//                });
 
                 UsernamePasswordAuthenticationToken authenToken =
                         new UsernamePasswordAuthenticationToken("","",authorityList);

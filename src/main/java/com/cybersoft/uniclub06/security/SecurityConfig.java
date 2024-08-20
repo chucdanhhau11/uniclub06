@@ -20,7 +20,7 @@ import org.springframework.security.web.header.Header;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
+    @Bean // hàm so sánh password đã được mã hóa
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

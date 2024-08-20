@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Encoders;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class AuthenController {
     private ObjectMapper objectMapper; //
 
     @PostMapping
-    public ResponseEntity<?>authen(@RequestBody AuthenRequest authenRequest) throws JsonProcessingException {
+    public ResponseEntity<?>authen(@Valid @RequestBody AuthenRequest authenRequest) throws JsonProcessingException {
 
 //        // Tạo key
 //        SecretKey secretKey = Jwts.SIG.HS256.key().build();
@@ -54,7 +55,7 @@ public class AuthenController {
 
         List<GrantedAuthority> listRole = (List<GrantedAuthority>) authentication.getAuthorities();
 
-        String data = objectMapper.writeValueAsString(listRole);
+            String data = objectMapper.writeValueAsString(listRole);
         System.out.println("kiemtra " + data);
         String token = jwtHelper.generateToken(data);
 
