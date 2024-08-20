@@ -24,6 +24,7 @@ public class JwtHelper { // class này giải quyết các giải mã token
         // Biến key kiểu string đã lưu trữ trước đó thành secretkey
         SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(strKey));
 
+        // setup thời gian
         Date currentData = new Date();
         Long miliSecondFuture = currentData.getTime() + expriredTime;
         Date dateFuture = new Date(miliSecondFuture);
