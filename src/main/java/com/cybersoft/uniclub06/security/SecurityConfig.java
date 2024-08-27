@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // tắt csrf
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // chặn không cho dùng session
                 .authorizeRequests(request -> { // quy định đường dẫn có được phép sài hay không or có cần chứng thực hay không
-                    request.requestMatchers("/authen").permitAll(); // tất cả các đường dẫn /authen không cần phải chứng thực không phân biệt Post hay get
+                    request.requestMatchers("/authen","/file/**").permitAll(); // tất cả các đường dẫn /authen không cần phải chứng thực không phân biệt Post hay get
                     request.requestMatchers("/profile").hasRole("ADMIN");
                     request.anyRequest().authenticated(); // tất cả các đường link khác phải chứng thực
                 })

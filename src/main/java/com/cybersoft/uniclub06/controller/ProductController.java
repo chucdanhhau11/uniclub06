@@ -21,4 +21,11 @@ public class ProductController {
 
         return new ResponseEntity<>("Hello add product", HttpStatus.OK);
     }
+
+    @GetMapping
+    public ResponseEntity<?> getProduct(){
+
+
+        return new ResponseEntity<>("Hello get product", HttpStatus.OK);
+    }
 }
