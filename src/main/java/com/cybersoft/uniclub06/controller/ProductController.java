@@ -1,5 +1,6 @@
 package com.cybersoft.uniclub06.controller;
 
+import com.cybersoft.uniclub06.dto.ProductDTO;
 import com.cybersoft.uniclub06.request.AddProductRequest;
 import com.cybersoft.uniclub06.response.BaseResponse;
 import com.cybersoft.uniclub06.service.FileService;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/product")
@@ -37,5 +40,17 @@ public class ProductController {
         response.setMessage("Succes !");
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getProduct(){
+        List<ProductDTO> listProductDTO = productService.getProducts();
+
+        BaseResponse response = new BaseResponse();
+        response.setStatusCode(200);
+        response.setMessage("Succes !");
+        response.setData(listProductDTO);
+
+        return new ResponseEntity<>(response , HttpStatus.OK);
     }
 }

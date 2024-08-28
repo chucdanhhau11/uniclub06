@@ -1,8 +1,12 @@
 package com.cybersoft.uniclub06.service.imp;
 
+
+import com.cybersoft.uniclub06.exception.FileNotFoundException;
 import com.cybersoft.uniclub06.exception.SaveFileException;
 import com.cybersoft.uniclub06.service.FileService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,5 +35,22 @@ public class FileServiceIMP implements FileService {
         }catch (Exception e){
             throw new SaveFileException("Lỗi lưu file " + e.getMessage());
         }
+    }
+
+    @Override
+    public Resource loadFile(String filename) {
+        try {
+            Path rootPath = Paths.get(root); // lấy đường dẫn
+            Path file = rootPath.resolve(filename); // nối đường dẫn vào filename
+            Resource resource = new UrlResource(file.toUri()); // biến tên file thành resource
+            if (resource.exists()){ // kiểm tra file có tồn tại hay không
+                return resource;
+            }else {
+                throw new FileNotFoundException();
+            }
+        }catch(Exception e){
+            throw new FileNotFoundException(e.getMessage());
+        }
+
     }
 }
