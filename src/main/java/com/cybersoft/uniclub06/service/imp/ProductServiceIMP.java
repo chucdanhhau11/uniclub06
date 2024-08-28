@@ -1,5 +1,6 @@
 package com.cybersoft.uniclub06.service.imp;
 
+import com.cybersoft.uniclub06.dto.ProductDTO;
 import com.cybersoft.uniclub06.entity.*;
 import com.cybersoft.uniclub06.repository.ProductRepository;
 import com.cybersoft.uniclub06.repository.VariantRepository;
@@ -9,6 +10,8 @@ import com.cybersoft.uniclub06.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ProductServiceIMP implements ProductService {
@@ -56,6 +59,23 @@ public class ProductServiceIMP implements ProductService {
 
         fileService.saveFile(request.files());
 
+    }
+
+    @Override
+    public List<ProductDTO> getProducts() {
+
+        return productRepository.findAll().stream().map(item -> {
+            ProductDTO productDTO = new ProductDTO();
+            try {
+
+                productDTO.setName(item.getName());
+                productDTO.setLinkhinh("http://localhost:8080/file/" + item.getVariantEntities().getFirst().getImages());
+                productDTO.setPrice(item.getPrice());
+            }catch (Exception e){
+                System.out.println("null rồi  " + e.getMessage());
+            }
+            return productDTO;
+        }).toList();
     }
 
 }
