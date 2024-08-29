@@ -15,6 +15,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.Header;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -34,10 +40,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, CustomFilter customFilter) throws Exception {
+    public CorsConfigurationSource corsSource(){
+        CorsConfiguration configurationSource = new CorsConfiguration();
+        configurationSource.setAllowedOrigins(Arrays.asList("*"));
+        configurationSource.setAllowedMethods((Arrays.asList("*")));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/*", configurationSource);
+
+        return source;
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, CustomFilter customFilter, CorsConfigurationSource corsSource) throws Exception {
 
         return http
                 .csrf(csrf -> csrf.disable()) // tắt csrf
+                .cors(cors -> cors.configurationSource(corsSource))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // chặn không cho dùng session
                 .authorizeRequests(request -> { // quy định đường dẫn có được phép sài hay không or có cần chứng thực hay không
                     request.requestMatchers("/authen","/file/**").permitAll(); // tất cả các đường dẫn /authen không cần phải chứng thực không phân biệt Post hay get
