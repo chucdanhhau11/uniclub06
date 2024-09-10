@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/product")
+@CrossOrigin
 public class ProductController {
 
     @Autowired
@@ -42,14 +43,26 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<?> getProduct(){
-        List<ProductDTO> listProductDTO = productService.getProducts();
+    @GetMapping("/{page}")
+    public ResponseEntity<?> getProduct(@PathVariable int page){
+        List<ProductDTO> listProductDTO = productService.getProducts(page);
 
         BaseResponse response = new BaseResponse();
         response.setStatusCode(200);
         response.setMessage("Succes !");
         response.setData(listProductDTO);
+
+        return new ResponseEntity<>(response , HttpStatus.OK);
+    }
+
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<?> getDetailProduct(@PathVariable int id) {
+
+
+        BaseResponse response = new BaseResponse();
+        response.setStatusCode(200);
+        response.setMessage("Succes !");
+        response.setData(productService.getDetailProduct(id));
 
         return new ResponseEntity<>(response , HttpStatus.OK);
     }
