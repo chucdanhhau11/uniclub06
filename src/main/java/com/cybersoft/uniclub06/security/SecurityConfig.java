@@ -4,6 +4,7 @@ import com.cybersoft.uniclub06.filter.CustomFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.Header;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -43,10 +45,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsSource(){
         CorsConfiguration configurationSource = new CorsConfiguration();
         configurationSource.setAllowedOrigins(Arrays.asList("*"));
-        configurationSource.setAllowedMethods((Arrays.asList("*")));
+        configurationSource.setAllowedMethods((Arrays.asList("*"))); // frontend
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/*", configurationSource);
+        source.registerCorsConfiguration("/**", configurationSource); // backend
 
         return source;
     }
@@ -60,7 +62,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // chặn không cho dùng session
                 .authorizeRequests(request -> { // quy định đường dẫn có được phép sài hay không or có cần chứng thực hay không
                     request.requestMatchers("/authen","/file/**").permitAll(); // tất cả các đường dẫn /authen không cần phải chứng thực không phân biệt Post hay get
-                    request.requestMatchers(HttpMethod.GET,"/product").permitAll();
+                    request.requestMatchers(HttpMethod.GET,"/product/**").permitAll();
                     request.requestMatchers("/product").hasRole("ADMIN");
                     request.anyRequest().authenticated(); // tất cả các đường link khác phải chứng thực
                 })
@@ -68,5 +70,8 @@ public class SecurityConfig {
                 .build();
 
     }
+
+
+
 
 }
