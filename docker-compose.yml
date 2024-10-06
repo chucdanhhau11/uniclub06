@@ -1,0 +1,50 @@
+services:
+  uniclub:
+    container_name: uniclub06
+    image: uniclub06
+    ports:
+      - 8080:8080
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql06:3306/uniclub
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=admin1234
+      - REDIS_HOST=redis06
+      - REDIS_PORT=6379
+      - SPRING_JPA_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL8Dialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+    #    restart: on-failure
+    networks:
+      - local
+
+  redis06:
+    image: redis
+    container_name: redis062
+    ports:
+      - 6381:6379
+    networks:
+      - local
+
+  redis-ui:
+    image: redis/redisinsight:latest
+    container_name: uiredis06
+    ports:
+      - 5541:5540
+    networks:
+      - local
+
+  mysql06:
+    image: mysql
+    container_name: mysql06dc
+    ports:
+      - 3308:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin1234
+    networks:
+      - local
+
+#MAC: command + option + L
+#WinDown: ctrl + alt + L
+networks:
+  local:
+    driver: bridge
