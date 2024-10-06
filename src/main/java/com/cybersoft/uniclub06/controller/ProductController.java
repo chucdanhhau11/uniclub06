@@ -66,4 +66,8 @@ public class ProductController {
 
         return new ResponseEntity<>(response , HttpStatus.OK);
     }
+
+    // tạo dự án mới
+    // làm cách nào để đóng gói ứng dụng
+    // laàm cách nào triển khai lên docker
 }

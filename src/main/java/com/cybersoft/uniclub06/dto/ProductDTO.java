@@ -2,10 +2,11 @@ package com.cybersoft.uniclub06.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class ProductDTO {
+public class ProductDTO implements Serializable {
     private int id;
     private String linkhinh;
     private String name;
